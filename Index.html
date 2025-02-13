@@ -271,5 +271,91 @@ function onCalculate() {
           return totalCost.toFixed(2)
         }
   </script>
+  <h2>Exercise 8: Objects and classes </h2>
+  <p>Create a class, basket, that has a method addltem(product,qty)</p>
+  <p>it should have a method getCost(prices) that returns the cost of the items which have been added. </p>
+
+  <h2>Exercise 9</h2>
+  <p>Create a testing page for class basket</p>
+
+  
+  <h2>Exercise 10</h2>
+  <p>Demonstrate the use of a component to display the basket</p> 
+
+  <h1>Shopping Basket</h1>
+  <div id="basketDisplay">
+    <p><strong>Items in Basket:</strong></p>
+    <ul id="basketItems"></ul>
+    <p><strong>Total Cost: $<span id="totalCost">0</span></strong></p>
+  </div>
+  
+  <button id="addItemButton">Add Item to Basket</button>
+
+  <script>
+
+class Basket {
+constructor() {
+this.items = [];
+}
+
+addItem(product, qty) {
+const existingItem = this.items.find(item => item.product === product);
+if (existingItem) {
+existingItem.qty += qty;
+} else {
+this.items.push({ product, qty });
+}
+}
+
+getCost(prices) {
+return this.items.reduce((total, item) => total + item.qty * prices[item.product], 0);
+}
+}
+
+
+const basket = new Basket();
+  
+
+ 
+    const prices = {
+      apple: 2.00,
+      banana: 1.50,
+      orange: 3.00
+    };
+
+
+    function updateDisplay() {
+      const basketItems = document.getElementById('basketItems');
+      const totalCostElem = document.getElementById('totalCost');
+      
+      
+      basketItems.innerHTML = '';
+      
+      
+      basket.items.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = ${item.qty} x ${item.product};
+        basketItems.appendChild(li);
+      });
+      
+      
+      totalCostElem.textContent = basket.getCost(prices).toFixed(2);
+    }
+
+   
+    document.getElementById('addItemButton').addEventListener('click', function() {
+      const product = prompt("Enter product (apple, banana, or orange):");
+      const qty = parseInt(prompt("Enter quantity:"), 10);
+      
+      if (product && prices[product] && !isNaN(qty) && qty > 0) {
+        basket.addItem(product, qty);
+        updateDisplay();
+      } else {
+        alert("Invalid input. Please try again.");
+      }
+    });
+
+    updateDisplay();
+  </script>
   </body> 
 </html>
